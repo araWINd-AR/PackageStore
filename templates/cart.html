@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Package Store | Cart{% endblock %}
+{% block content %}
+<section class="page-title">
+    <h1>Your Cart</h1>
+    <p>Review your selected items before demo checkout.</p>
+</section>
+
+{% if items %}
+<div class="cart-layout">
+    <div class="cart-items">
+        {% for item in items %}
+        <div class="cart-row">
+            <div>
+                <h3>{{ item.product.name }}</h3>
+                <p>{{ item.product.category }} • Qty: {{ item.qty }}</p>
+            </div>
+            <strong>${{ "%.2f"|format(item.subtotal) }}</strong>
+            <a href="{{ url_for('remove_from_cart', product_id=item.product.id) }}">Remove</a>
+        </div>
+        {% endfor %}
+    </div>
+    <aside class="summary">
+        <h2>Order Summary</h2>
+        <p>Total</p>
+        <strong>${{ "%.2f"|format(total) }}</strong>
+        <form action="{{ url_for('checkout') }}" method="post">
+            <button type="submit">Place Demo Order</button>
+        </form>
+    </aside>
+</div>
+{% else %}
+<div class="empty">
+    <h2>Your cart is empty.</h2>
+    <a class="btn primary" href="{{ url_for('shop') }}">Start Shopping</a>
+</div>
+{% endif %}
+{% endblock %}

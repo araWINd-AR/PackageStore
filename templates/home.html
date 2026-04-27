@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Package Store | Home{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <p class="eyebrow">Local bottle shop experience</p>
+        <h1>Shop wine, spirits, and beer in one clean place.</h1>
+        
+        <div class="hero-actions">
+            <a class="btn primary" href="{{ url_for('shop') }}">Shop Now</a>
+            <a class="btn secondary" href="{{ url_for('shop') }}?category=Wine">View Wine</a>
+        </div>
+    </div>
+    <div class="hero-card">
+        <h3>Today's Deals</h3>
+        <p>Save on selected wine, vodka, lager, and sparkling products.</p>
+        <span>Up to 20% Off</span>
+    </div>
+</section>
+
+<section class="category-grid">
+    {% for category in categories if category != "All" %}
+    <a class="category-card" href="{{ url_for('shop', category=category) }}">
+        <h3>{{ category }}</h3>
+        <p>Explore {{ category|lower }} collection</p>
+    </a>
+    {% endfor %}
+</section>
+
+<section class="section-head">
+    <div>
+        <p class="eyebrow">Featured</p>
+        <h2>Staff Picks</h2>
+    </div>
+    <a href="{{ url_for('shop') }}">View all</a>
+</section>
+
+<section class="products">
+    {% for product in products %}
+        {% include "product_card.html" %}
+    {% endfor %}
+</section>
+{% endblock %}

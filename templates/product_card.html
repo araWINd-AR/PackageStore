@@ -1,0 +1,12 @@
+<article class="product-card">
+    <div class="product-image">{{ product.image }}</div>
+    <div class="product-info">
+        <span class="tag">{{ product.tag }}</span>
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.category }} • {{ product.type }}</p>
+        <div class="product-bottom">
+            <strong>${{ "%.2f"|format(product.price) }}</strong>
+            <a href="{{ url_for('add_to_cart', product_id=product.id) }}">Add</a>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Package Store | Shop{% endblock %}
+{% block content %}
+<section class="page-title">
+    <h1>Shop Products</h1>
+    <p>Filter by category or search by product name/type.</p>
+</section>
+
+<div class="filters">
+    {% for category in categories %}
+    <a class="{{ 'active' if selected == category else '' }}" href="{{ url_for('shop', category=category) }}">{{ category }}</a>
+    {% endfor %}
+</div>
+
+<section class="products">
+    {% if products %}
+        {% for product in products %}
+            {% include "product_card.html" %}
+        {% endfor %}
+    {% else %}
+        <div class="empty">No products found. Try another search.</div>
+    {% endif %}
+</section>
+{% endblock %}
