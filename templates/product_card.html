@@ -1,12 +1,23 @@
 <article class="product-card">
     <div class="product-image">{{ product.image }}</div>
     <div class="product-info">
-        <span class="tag">{{ product.tag }}</span>
+        <div class="product-meta">
+            <span class="tag">{{ product.tag }}</span>
+            {% if product.stock > 0 %}
+                <span class="stock in-stock">Stock: {{ product.stock }}</span>
+            {% else %}
+                <span class="stock out-stock">Out of stock</span>
+            {% endif %}
+        </div>
         <h3>{{ product.name }}</h3>
         <p>{{ product.category }} • {{ product.type }}</p>
         <div class="product-bottom">
             <strong>${{ "%.2f"|format(product.price) }}</strong>
-            <a href="{{ url_for('add_to_cart', product_id=product.id) }}">Add</a>
+            {% if product.stock > 0 %}
+                <a class="btn btn-warning btn-sm" href="{{ url_for('add_to_cart', product_id=product.id) }}">Add</a>
+            {% else %}
+                <button class="btn btn-secondary btn-sm" disabled>Sold Out</button>
+            {% endif %}
         </div>
     </div>
 </article>

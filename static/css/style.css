@@ -246,3 +246,39 @@ footer {
     .hero { padding: 34px; }
     .hero h1 { font-size: 38px; }
 }
+/* Added for SQLite inventory + Bootstrap requirement display */
+.flash-wrapper {
+    margin: 18px 6%;
+}
+.product-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.stock {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+.in-stock {
+    background: #e7f8ee;
+    color: #217a3b;
+}
+.out-stock {
+    background: #ffe7e7;
+    color: #a12b2b;
+}
+.cart-row small {
+    color: #7a6b60;
+}
+.store-navbar .btn,
+.product-bottom .btn,
+.summary .btn,
+.empty .btn {
+    border-radius: 14px;
+    font-weight: 700;
+}

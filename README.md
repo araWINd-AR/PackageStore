@@ -1,108 +1,59 @@
-# Package Store – Flask E-Commerce Website
+# Package Store Flask Website
 
-## Description
+This updated project includes the required Flask route, try/except handling, object-oriented Python classes, SQLite database storage, Bootstrap CSS framework, and inventory stock behavior.
 
-This project is a simple e-commerce website built using Python and Flask.  
-The main goal of this project is to understand how an online store works, including product display, search, filtering, and cart functionality.
+## Implemented Requirements
 
-The design is inspired by modern beverage store websites, but the implementation is kept simple and beginner-friendly.
+- Flask route format: `http://127.0.0.1:5000/remove/<product_id>`
+  - Example: `http://127.0.0.1:5000/remove/1`
+- Object-oriented implementation:
+  - `DatabaseManager`
+  - `ProductRepository`
+  - `CartService`
+- SQL database:
+  - SQLite database is created automatically at `data/package_store.db`
+  - Product stock is stored in the `products` table
+- CSS framework:
+  - Bootstrap 5 is linked in `templates/base.html`
+- Pythonic implementation:
+  - classes, helper methods, context managers, list comprehensions, and clean route logic
+- Try/except format:
+  - database routes use `try`, `except sqlite3.Error`, and flash messages
+- Inventory behavior:
+  - when a user adds an item to cart, product stock decreases by 1
+  - when a user removes an item from cart, product stock is restored
+  - out-of-stock products cannot be added
 
----
+## Run Locally
 
-## Features
+```bash
+python -m venv venv
 
-- View products on home and shop pages  
-- Search products by name or type  
-- Filter products by category (Wine, Beer, Spirits)  
-- Add items to cart  
-- Remove items from cart  
-- View total price  
-- Checkout option (clears cart)  
-- About page with store details  
+# Windows
+venv\Scripts\activate
 
----
-
-## Technologies Used
-
-- Python  
-- Flask  
-- HTML (Jinja templates)  
-- CSS  
-- JavaScript  
-
----
-
-## Project Structure
-
-package_store_flask_project/
-│
-├── app.py  
-├── requirements.txt  
-│
-├── templates/  
-│   ├── index.html  
-│   ├── shop.html  
-│   ├── cart.html  
-│   ├── about.html  
-│   └── base.html  
-│
-├── static/  
-│   ├── css/  
-│   ├── js/  
-│   └── images/  
-
----
-
-## How to Run
-
-1. Download or clone the project
-
-2. Open terminal and go to project folder
-
-3. Install dependencies
+# macOS/Linux
+source venv/bin/activate
 
 pip install -r requirements.txt
-
-4. Run the app
-
 python app.py
+```
 
-5. Open in browser
+Open:
 
-http://127.0.0.1:5000
+```text
+http://127.0.0.1:5000/
+```
 
----
+## Main Files Updated
 
-## Key Concepts
-
-- Flask routing using @app.route()  
-- Template rendering using render_template()  
-- Handling user input using request  
-- Session usage for cart storage  
-- Basic frontend integration  
-
----
-
-## Limitations
-
-- No database (products are hardcoded)  
-- Cart is temporary (session-based)  
-- No user login system  
-- No real payment integration  
-
----
-
-## Future Improvements
-
-- Add database (MySQL / SQLite)  
-- User authentication  
-- Persistent cart  
-- Payment gateway  
-- Admin panel  
-
----
-
-## Author
-
-Aravind Ganipisetty  
-MS in Computer Science
+```text
+app.py
+requirements.txt
+templates/base.html
+templates/home.html
+templates/shop.html
+templates/product_card.html
+templates/cart.html
+static/css/style.css
+```
