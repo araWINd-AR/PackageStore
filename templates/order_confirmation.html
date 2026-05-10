@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Package Store | Order Confirmation{% endblock %}
+{% block content %}
+<section class="page-title">
+    <h1>Order Confirmed</h1>
+    <p>Your demo order was placed successfully.</p>
+</section>
+
+<section class="confirmation-card">
+    <div class="confirmation-header">
+        <div>
+            <p class="eyebrow">Demo Receipt</p>
+            <h2>Order {{ order.order_number }}</h2>
+        </div>
+        <span class="success-pill">Confirmed</span>
+    </div>
+
+    <div class="confirmation-grid">
+        <div>
+            <h3>Customer</h3>
+            <p>{{ order.customer }}</p>
+            <p>{{ order.email }}</p>
+            <p>{{ order.phone }}</p>
+        </div>
+        <div>
+            <h3>Delivery</h3>
+            <p>{{ order.delivery_label }}</p>
+            <p>{{ order.delivery_eta }}</p>
+        </div>
+        <div>
+            <h3>Payment</h3>
+            <p>{{ order.payment_label }}</p>
+            {% if order.card_last_four %}
+            <p>Card ending in {{ order.card_last_four }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3>Items</h3>
+    <div class="receipt-items">
+        {% for item in order.items %}
+        <div class="summary-line">
+            <span>{{ item.name }} × {{ item.qty }}</span>
+            <strong>${{ "%.2f"|format(item.subtotal) }}</strong>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="receipt-total">
+        <div class="summary-line"><span>Subtotal</span><strong>${{ "%.2f"|format(order.subtotal) }}</strong></div>
+        <div class="summary-line"><span>Tax</span><strong>${{ "%.2f"|format(order.tax) }}</strong></div>
+        <div class="summary-line"><span>Delivery</span><strong>${{ "%.2f"|format(order.delivery_fee) }}</strong></div>
+        <div class="summary-line total-line"><span>Total</span><strong>${{ "%.2f"|format(order.total) }}</strong></div>
+    </div>
+
+    <div class="secure-note mt-4">
+        <strong>Safety note:</strong>
+        <p>This is a demo order confirmation for the final project. It does not charge money or save card details.</p>
+    </div>
+
+    <a class="btn btn-warning mt-4" href="{{ url_for('shop') }}">Back to Shop</a>
+</section>
+{% endblock %}

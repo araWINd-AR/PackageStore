@@ -5,7 +5,6 @@
     <div class="hero-text">
         <p class="eyebrow">Local bottle shop experience</p>
         <h1>Shop wine, spirits, and beer in one clean place.</h1>
-        <p>This Flask project now uses SQLite inventory, object-oriented Python classes, and safe try/except route handling.</p>
         <div class="hero-actions">
             <a class="btn primary" href="{{ url_for('shop') }}">Shop Now</a>
             <a class="btn secondary" href="{{ url_for('shop') }}?category=Wine">View Wine</a>
@@ -14,7 +13,10 @@
     <div class="hero-card">
         <h3>Today's Deals</h3>
         <p>Save on selected wine, vodka, lager, and sparkling products.</p>
-        <span>Up to 20% Off</span>
+        <span>{{ in_stock_count }} products currently in stock</span>
+        {% if keyword_preview %}
+        <small>Generator keyword preview: {{ keyword_preview|join(', ') }}</small>
+        {% endif %}
     </div>
 </section>
 

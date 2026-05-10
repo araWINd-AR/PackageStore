@@ -3,36 +3,162 @@
 {% block content %}
 <section class="page-title">
     <h1>Your Cart</h1>
-    <p>Review your selected items before demo checkout.</p>
+    <p>Review items, enter customer details, choose delivery, and select a demo payment option.</p>
 </section>
 
 {% if items %}
-<div class="cart-layout">
+<div class="checkout-layout">
     <div class="cart-items">
+        <h2>Cart Items</h2>
         {% for item in items %}
-        <div class="cart-row">
+        <div class="cart-row enhanced-cart-row">
             <div>
                 <h3>{{ item.product.name }}</h3>
-                <p>{{ item.product.category }} • Qty: {{ item.qty }}</p>
+                <p>{{ item.product.category }} • {{ item.product.type }} • Qty: {{ item.qty }}</p>
                 <small>Remove route example: /remove/{{ item.product.id }}</small>
             </div>
             <strong>${{ "%.2f"|format(item.subtotal) }}</strong>
             <a class="btn btn-outline-danger btn-sm" href="{{ url_for('remove_from_cart', product_id=item.product.id) }}">Remove</a>
         </div>
         {% endfor %}
+
+        <section class="checkout-card mt-4">
+            <h2>Customer Details</h2>
+            <form id="checkoutForm" action="{{ url_for('checkout') }}" method="post">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Full Name</label>
+                        <input class="form-control" type="text" name="full_name" placeholder="John Smith" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input class="form-control" type="email" name="email" value="{{ current_user_email or '' }}" placeholder="name@example.com" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Phone</label>
+                        <input class="form-control" type="tel" name="phone" placeholder="(203) 555-0198" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Promo Code</label>
+                        <input class="form-control" type="text" name="promo_code" placeholder="Optional demo field">
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2>Delivery Options</h2>
+                <div class="checkout-options">
+                    {% for key, option in delivery_options.items() %}
+                    <label class="option-card">
+                        <input type="radio" name="delivery_method" value="{{ key }}" data-fee="{{ option.fee }}" {% if key == 'pickup' %}checked{% endif %} required>
+                        <span>
+                            <strong>{{ option.label }}</strong>
+                            <small>{{ option.eta }} • ${{ "%.2f"|format(option.fee) }}</small>
+                        </span>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <div id="addressFields" class="address-box mt-3">
+                    <h3>Delivery Address</h3>
+                    <p class="text-muted">Required only for standard or express delivery.</p>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Street Address</label>
+                            <input class="form-control delivery-address" type="text" name="street" placeholder="123 Main Street">
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">City</label>
+                            <input class="form-control delivery-address" type="text" name="city" placeholder="New Haven">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">State</label>
+                            <input class="form-control delivery-address" type="text" name="state" placeholder="CT">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">ZIP Code</label>
+                            <input class="form-control delivery-address" type="text" name="zip_code" placeholder="06511">
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2>Payment Options</h2>
+                <div class="checkout-options payment-options">
+                    {% for key, label in payment_options.items() %}
+                    <label class="option-card">
+                        <input type="radio" name="payment_method" value="{{ key }}" {% if key == 'card' %}checked{% endif %} required>
+                        <span>
+                            <strong>{{ label }}</strong>
+                            <small>Demo payment option</small>
+                        </span>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <div id="cardFields" class="card-box mt-3">
+                    <h3>Demo Card Details</h3>
+                    <p class="text-muted">For class demo only. The app does not process real payments or save card details.</p>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name on Card</label>
+                            <input class="form-control card-input" type="text" name="card_name" placeholder="John Smith">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Card Number</label>
+                            <input class="form-control card-input" type="text" name="card_number" placeholder="4242 4242 4242 4242" inputmode="numeric">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Expiry</label>
+                            <input class="form-control card-input" type="text" name="card_expiry" placeholder="MM/YY">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CVV</label>
+                            <input class="form-control card-input" type="password" name="card_cvv" placeholder="123">
+                        </div>
+                    </div>
+                </div>
+
+                <label class="age-check mt-4">
+                    <input type="checkbox" name="age_confirmed" value="yes" required>
+                    <span>I confirm that I am 21 or older and understand this is a demo checkout.</span>
+                </label>
+
+                <button class="btn btn-warning w-100 mt-4" type="submit">Place Demo Order</button>
+            </form>
+        </section>
     </div>
-    <aside class="summary">
+
+    <aside class="summary enhanced-summary">
         <h2>Order Summary</h2>
-        <p>Total</p>
-        <strong>${{ "%.2f"|format(total) }}</strong>
-        <form action="{{ url_for('checkout') }}" method="post">
-            <button class="btn btn-warning w-100" type="submit">Place Demo Order</button>
-        </form>
+        <div class="summary-line">
+            <span>Subtotal</span>
+            <strong id="summarySubtotal" data-subtotal="{{ order_summary.subtotal }}">${{ "%.2f"|format(order_summary.subtotal) }}</strong>
+        </div>
+        <div class="summary-line">
+            <span>Estimated Tax</span>
+            <strong id="summaryTax" data-tax-rate="0.0635">${{ "%.2f"|format(order_summary.tax) }}</strong>
+        </div>
+        <div class="summary-line">
+            <span>Delivery Fee</span>
+            <strong id="summaryDelivery">${{ "%.2f"|format(order_summary.delivery_fee) }}</strong>
+        </div>
+        <div class="summary-line total-line">
+            <span>Total</span>
+            <strong id="summaryTotal">${{ "%.2f"|format(order_summary.total) }}</strong>
+        </div>
+        <div class="secure-note">
+            <strong>Demo Checkout</strong>
+            <p>No real payment is processed. Card information is not stored.</p>
+        </div>
+        <a class="btn btn-outline-dark w-100 mt-3" href="{{ url_for('shop') }}">Continue Shopping</a>
     </aside>
 </div>
 {% else %}
 <div class="empty">
     <h2>Your cart is empty.</h2>
+    <p>Add products from the shop page before checkout.</p>
     <a class="btn primary" href="{{ url_for('shop') }}">Start Shopping</a>
 </div>
 {% endif %}
